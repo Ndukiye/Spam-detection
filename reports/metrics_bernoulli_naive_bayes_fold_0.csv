@@ -1,0 +1,2 @@
+fold,model,variant,accuracy,precision,recall,f1,auc,threshold
+0,Bernoulli Naive Bayes,base,0.9202037351443124,0.55,0.33,0.4125,0.9437476808905381,
