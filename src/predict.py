@@ -11,7 +11,7 @@ DEFAULT_REPORTS_DIR = Path(__file__).resolve().parent.parent / "reports"
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn.feature_extraction.text")
 
 def load_pipeline(model_path: str | None = None):
-    p = Path(model_path) if model_path else MODELS_DIR / "sms_spam_pipeline.joblib"
+    p = Path(model_path) if model_path else MODELS_DIR / "sms_spam_pipeline_support_vector_machine_fold_0.joblib"
     if not p.exists():
         print("model_not_found")
         sys.exit(1)

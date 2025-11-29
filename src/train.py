@@ -23,6 +23,12 @@ MODELS_DIR = Path(__file__).resolve().parent.parent / "models"
 
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn.feature_extraction.text")
 
+def to_dense(X):
+    try:
+        return X.toarray()
+    except Exception:
+        return X
+
 def _best_threshold(y_true, y_scores, min_precision: float = 0.8):
     if y_scores is None:
         return None, None
@@ -138,10 +144,9 @@ def main() -> None:
     models.append(("Linear SVM", Pipeline([("tfidf", vec), ("clf", LinearSVC(class_weight="balanced"))])))
     models.append(("SGD Classifier", Pipeline([("tfidf", vec), ("clf", SGDClassifier(max_iter=1000, class_weight="balanced"))])))
     models.append(("Passive Aggressive", Pipeline([("tfidf", vec), ("clf", PassiveAggressiveClassifier(max_iter=1000, class_weight="balanced"))])))
-    models.append(("Decision Tree", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(lambda x: x.toarray(), accept_sparse=True)), ("clf", DecisionTreeClassifier())])))
-    models.append(("Gaussian Naive Bayes", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(lambda x: x.toarray(), accept_sparse=True)), ("clf", GaussianNB())])))
-    models.append(("AdaBoost", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(lambda x: x.toarray(), accept_sparse=True)), ("clf", AdaBoostClassifier())])))
-    models.append(("Gradient Boosting", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(lambda x: x.toarray(), accept_sparse=True)), ("clf", GradientBoostingClassifier())])))
+    models.append(("Decision Tree", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(to_dense, accept_sparse=True)), ("clf", DecisionTreeClassifier())])))
+    models.append(("AdaBoost", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(to_dense, accept_sparse=True)), ("clf", AdaBoostClassifier())])))
+    models.append(("Gradient Boosting", Pipeline([("tfidf", vec), ("to_dense", FunctionTransformer(to_dense, accept_sparse=True)), ("clf", GradientBoostingClassifier())])))
 
     if args.models:
         sel = set([m.strip().lower() for m in args.models.split(",") if m.strip()])

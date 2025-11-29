@@ -64,17 +64,14 @@ Reports and Visualization
 
 Prediction Usage
 
-- Single text (canonical model):
-  - `python -m src.predict --text "Win a free prize now"`
+- Single text (recommended working model):
+  - `python -m src.predict --model models/sms_spam_pipeline_support_vector_machine_fold_0.joblib --use_tuned 1 --text "Win a free prize now"`
   - Output: `spam|not spam | model=<name> | confidence=<pct> | score=<float>`
 - Subject and body:
-  - `python -m src.predict --subject "Congratulations" --body "You won a lottery"`
+  - `python -m src.predict --model models/sms_spam_pipeline_support_vector_machine_fold_0.joblib --use_tuned 1 --subject "Congratulations" --body "You won a lottery"`
 - Specify model file:
-  - `python -m src.predict --model models/sms_spam_pipeline_logistic_regression_fold_0.joblib --text "free prize win cash"`
-- Use tuned threshold automatically:
-  - `python -m src.predict --model models/sms_spam_pipeline_logistic_regression_fold_0.joblib --use_tuned 1 --text "..."`
-- Override threshold manually:
-  - `python -m src.predict --model <path> --threshold 0.4 --text "..."`
+  - `python -m src.predict --model models/sms_spam_pipeline_support_vector_machine_fold_0.joblib --use_tuned 1 --text "free prize win cash"`
+
 - Batch CSV:
   - Input CSV must contain a `text` column.
   - `python -m src.predict --model <path> --file path/to/input.csv > path/to/output.csv`
@@ -85,8 +82,8 @@ Testing & Reproducibility
   - `python -m src.train --n_splits 2 --max_folds 1 --models lr,svm --dataset spamassassin --optimize_recall 1 --min_precision 0.8 --reports_dir reports`
   - Verify models in `models/` and artifacts in `reports/`.
 - Prediction smoke test:
-  - `python -m src.predict --model models/sms_spam_pipeline_logistic_regression_fold_0.joblib --use_tuned 1 --text "free prize win cash"`
-  - Expected output example: `spam | model=Logistic Regression | confidence=82.64% | score=0.4971`
+  - `python -m src.predict --model models/sms_spam_pipeline_support_vector_machine_fold_0.joblib --use_tuned 1 --text "free prize win cash"`
+  - Expected output example: `spam | model=Support Vector Machine | confidence=81.36% | score=0.1038`
 
 Notes & Limitations
 
